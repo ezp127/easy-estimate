@@ -270,11 +270,6 @@
 
     // Initialize
 
-    const form = document.querySelector('form');
-    form.addEventListener('change', function() {
-        alert('Hi!');
-    });
-    
     const data = getData();
     populatePage(data);
     buildChart(data.yUnits, data.xLabels, data.dataset1, data.dataset2);
