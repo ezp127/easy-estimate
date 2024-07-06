@@ -4,7 +4,7 @@
 
 Say you have a bunch of tasks on your backlog, and your manager gives you a deadline or asks you to provide an estimation of when you and your team will complete the project.
 
-Easy Estimate—a cliché, yes ^_^—is a simple  estimation[^1] tool that helps you discover if what you are trying to accomplish is even possible.
+Easy Estimate — a cliché, yes — is a simple  estimation[^1] tool that helps you discover if what you are trying to accomplish is even possible.
 
 You can use this tool to make projections of anything you classify as a pile of things that need to be done.
 
@@ -21,7 +21,7 @@ Count *(I meant it, just count; no fancy Fibonacci story points needed)* how man
 
 Say you start the project with 20 stories and plan to accomplish it in 4 sprints[^3]. Your backlog items should look like this:
  
-    backlog items: 20, 20, 20, 20
+    Backlog items: 20, 20, 20, 20
  
 Then, in the second sprint, you decide to include one more story, so the backlog input should be `20, 21`. At the end, if you keep these 21 stories, your final result should be: 
  
@@ -34,6 +34,7 @@ Feel free to kill two stories in the third sprint if needed.
 ### Finished items
  
 Make a projection. You can do this by accumulating how many items you think you can finish per sprint.
+
 Say you have those 20 backlog stories and plan to complete them in 4 sprints. You could distribute 5 stories per sprint, so your chart can be configured as:
 
     Finished items: 5, 10, 15, 20
@@ -51,6 +52,8 @@ This line cross will indicate, approximately, whether the current pace is suffic
 
 ![image](https://github.com/ezp127/easy-estimate/raw/main/demo.png)
 
+As the example above shows, if you keep finishing stories (green bars) at the current pace, at least one more sprint will be needed to complete the project.
+
 ## What's the science behind this tool?
 
 It's just [linear regression](https://en.wikipedia.org/wiki/Linear_regression) represented on a bar chart.
@@ -67,6 +70,7 @@ It's just [linear regression](https://en.wikipedia.org/wiki/Linear_regression) r
 **Q**: "*Dude, your code is the ugliest I've ever seen; why don't you use the latest {put favorite front-end framework here} along with an enterprise database; back-end framework; Kubernetes; and spend 36 months developing this app???!!!*".
  
 **A**: Didn't you hear the latest trend? Vanilla single-file application is the new hype. Don't miss out!
+Just kidding, always evaluate your project needs! ;)
 
 **Q**: Is this a solid and production-ready application?
 
