@@ -38,30 +38,34 @@
       <div class="basis-1/4">
         <div class="text-center text-xl">Project data</div>
         <form id="projectForm" class="mt-4" method="GET" action="">
-          <div class="mb-4">
+          <div class="mb-2">
             <label class="block">Project name</label>
             <input required type="text" id="projectName" name="projectName" class="w-full p-2 border-2 border-gray-300 rounded-lg shadow-lg">
           </div>
           <div class="flex flex-row">
-            <div class="mb-4">
-              <label class="block" title="The chart Y scale">Y scale</label>
+            <div class="mb-2">
+              <label class="block" title="The chart Y scale">Scale</label>
               <input required type="text" id="yUnits" name="yUnits" class="w-20 p-2 border-2 border-gray-300 rounded-lg shadow-lg">
             </div>
           </div>
-          <div class="mb-4">
-            <label class="block text-gray-700">X scale</label>
+          <div class="mb-2">
+            <label class="block" title="The chart X scale">Labels</label>
             <textarea required id="xLabels" name="xLabels" class="w-full border-2 border-gray-300 bg-gray-50 rounded-lg shadow-lg p-2 h-20"></textarea>
           </div>
-          <div class="mb-4">
-            <label class="block text-red-700">Backlog items</label>
-            <textarea required id="dataset1" name="dataset1" class="w-full border-2 border-red-300 bg-red-50 rounded-lg shadow-lg p-2 h-16"></textarea>
-          </div>
-          <div class="mb-4">
-            <label class="block text-emerald-700">Finished items</label>
+          <div class="mb-2">
+            <label class="block text-emerald-700">Finished: <span id="dataset2Total"></span></label>
             <textarea required id="dataset2" name="dataset2" class="w-full border-2 border-emerald-300 bg-emerald-50 rounded-lg shadow-lg p-2 h-16"></textarea>
           </div>
+          <div class="mb-2">
+            <label class="block text-indigo-700">Planned: <span id="dataset3Total"></span></label>
+            <textarea id="dataset3" name="dataset3" class="w-full border-2 border-indigo-300 bg-indigo-50 rounded-lg shadow-lg p-2 h-16"></textarea>
+          </div>
+          <div class="mb-2">
+            <label class="block text-red-700">Backlog</label>
+            <textarea required id="dataset1" name="dataset1" class="w-full border-2 border-red-300 bg-red-50 rounded-lg shadow-lg p-2 h-16"></textarea>
+          </div>
           <div>
-            <button type="submit" class="w-full border-2 border-blue-300 p-2 bg-blue-100 hover:bg-blue-200 rounded-lg shadow-lg">Update Chart</button>
+            <button type="submit" class="w-full border-2 border-gray-400 p-2 bg-gray-200 hover:bg-gray-300 rounded-lg shadow-lg">Update chart</button>
           </div>
         </form>
       </div>
@@ -107,8 +111,9 @@
         projectName: 'Demo Project',
         yUnits: 60,
         xLabels: 'Sprint 1, Sprint 2, Sprint 3, Sprint 4, Sprint 5, Sprint 6, Sprint 7, Sprint 8, Sprint 9, Sprint 10',
-        dataset1: '20,20,20,20',
-        dataset2: '5,10,15,20'
+        dataset1: '25,25,25,25,25',
+        dataset2: '5,4,3,3,5',
+        dataset3: '5,5,5,5,5'
       };
     }
 
@@ -121,27 +126,56 @@
       return data;
     }
 
+    function splitItems(string)
+    {
+      try {
+        return string.split(',').map(numStr => parseInt(numStr));
+      } catch (error) {
+        return [];
+      }
+    }
+    
+    function sumItems(data)
+    {
+      return data.reduce(function(accumulator, each){
+        return accumulator + each;
+      }, 0);
+    }
+    
     function populatePage(data)
     {
       document.title = data.projectName;
       document.getElementById('chartName').innerHTML = data.projectName;
+      //
       document.getElementById('projectName').value = data.projectName;
       document.getElementById('yUnits').value = data.yUnits;
       document.getElementById('xLabels').value = data.xLabels;
       document.getElementById('dataset1').value = data.dataset1;
       document.getElementById('dataset2').value = data.dataset2;
+      document.getElementById('dataset3').value = data.dataset3;
+      //
+      document.getElementById('dataset2Total').innerHTML = sumItems(splitItems(data.dataset2));
+      document.getElementById('dataset3Total').innerHTML = sumItems(splitItems(data.dataset3));
     }
 
-    function buildChart(yUnits, xLabels, dataset1, dataset2)
+    function buildChart(yUnits, xLabels, dataset1, dataset2, dataset3)
     {
-      let labels = [];
       let backlogData = [];
       let finishedData = [];
+      let plannedData = [];
 
-      labels = xLabels.split(',');
-      dataset1 = dataset1.split(',').map(numStr => parseInt(numStr));
-      dataset2 = dataset2.split(',').map(numStr => parseInt(numStr));
-
+      yUnits = parseInt(yUnits);
+      xLabels = xLabels.split(',');
+      dataset1 = splitItems(dataset1);
+        
+      dataset2 = splitItems(dataset2).map((curr, i, array) => {
+        return array[i] += array[i-1] ? array[i-1] : 0
+      });
+        
+      dataset3 = splitItems(dataset3).map((curr, i, array) => {
+        return array[i] += array[i-1] ? array[i-1] : 0
+      });
+      
       const cumulativeSum = (sum => value => sum += value)(0);
 
       for (let index = 0; index < dataset1.length; index++) {
@@ -151,18 +185,22 @@
       for (let index = 0; index < dataset2.length; index++) {
         finishedData.push({ x: index, y: dataset2[index] });
       }
-
+      
+      for (let index = 0; index < dataset3.length; index++) {
+        plannedData.push({ x: index, y: dataset3[index] });
+      }
+      
       ///
 
       const linRegFinishedData = linearRegression(finishedData, 'x', 'y');
       let linRegFinishedDataLine = [];
-      for (let index = 0; index < labels.length; index++) {
+      for (let index = 0; index < xLabels.length; index++) {
         linRegFinishedDataLine.push({ x: index, y: linRegFinishedData(index) });
       }
 
       const linRegBacklogData = linearRegression(backlogData, 'x', 'y');
       let linRegBacklogDataLine = [];
-      for (let index = 0; index < labels.length; index++) {
+      for (let index = 0; index < xLabels.length; index++) {
         linRegBacklogDataLine.push({ x: index, y: linRegBacklogData(index) });
       }
 
@@ -172,9 +210,9 @@
         label: 'Finished',
         data: finishedData,
         borderRadius: 10,
-        borderColor: '#028090',
-        backgroundColor: '#028090',
-        hoverBackgroundColor: '#028090',
+        borderColor: '#059669',
+        backgroundColor: '#059669',
+        hoverBackgroundColor: '#059669',
         maxBarThickness: 70,
         stack: 'combined',
         type: 'bar'
@@ -184,17 +222,29 @@
         label: 'Finished projection',
         type: 'line',
         data: linRegFinishedDataLine,
-        borderColor: '#000000',
-        backgroundColor: '#000000'
+        borderColor: '#064e3b',
+        backgroundColor: '#064e3b'
       };
 
+      const plannedBars = {
+        label: 'Planned',
+        data: plannedData,
+        borderRadius: 10,
+        borderColor: '#a5b4fc',
+        backgroundColor: '#a5b4fc',
+        hoverBackgroundColor: '#a5b4fc',
+        maxBarThickness: 70,
+        stack: 'combined',
+        type: 'bar'
+      };
+      
       const backlogBars = {
         label: 'Backlog',
         data: backlogData,
         borderRadius: 10,
-        borderColor: '#f07167',
-        backgroundColor: '#f07167',
-        hoverBackgroundColor: '#f07167',
+        borderColor: '#fb7185',
+        backgroundColor: '#fb7185',
+        hoverBackgroundColor: '#fb7185',
         maxBarThickness: 80,
         stack: 'combined',
         type: 'bar'
@@ -204,16 +254,17 @@
         label: 'Backlog projection',
         type: 'line',
         data: linRegBacklogDataLine,
-        borderColor: '#000000',
-        backgroundColor: '#000000'
+        borderColor: '#881337',
+        backgroundColor: '#881337'
       };
-
+      
       const data = {
-        labels: labels,
+        labels: xLabels,
         datasets: [
           finishedLine,
           backlogLine,
           finishedBars,
+          plannedBars,
           backlogBars
         ]
       };
@@ -227,8 +278,7 @@
           animation: false,
           plugins: {
             title: {
-              display: false,
-              text: 'Projeção Backlog'
+              display: false
             },
             legend: {
               labels: {
@@ -275,7 +325,7 @@
 
     const data = getData();
     populatePage(data);
-    buildChart(data.yUnits, data.xLabels, data.dataset1, data.dataset2);
+    buildChart(data.yUnits, data.xLabels, data.dataset1, data.dataset2, data.dataset3);
   </script>
 </body>
 

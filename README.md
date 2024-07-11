@@ -17,19 +17,19 @@ You can use this tool to make projections of anything you classify as a pile of 
 
 ### Backlog items
 
-Count *(I meant it, just count; no fancy Fibonacci story points needed)* how many backlog items[^2] you have in total, including finished and unfinished. This number must be cumulative and replicated in each chart backlog column. 
+Count *(I meant it, just count; no fancy Fibonacci story points needed)* how many backlog items[^2] you have in total, including finished and unfinished. This number **must be cumulative** and **replicated** in each chart backlog column. 
 
 Say you start the project with 20 stories and plan to accomplish it in 4 sprints[^3]. Your backlog items should look like this:
  
-    Backlog items: 20, 20, 20, 20
+    Backlog: 20, 20, 20, 20
  
 Then, in the second sprint, you decide to include one more story, so the backlog input should be `20, 21`. At the end, if you keep these 21 stories, your final result should be: 
  
-    Backlog items: 20, 21, 21, 21
+    Backlog: 20, 21, 21, 21
 
 Feel free to kill two stories in the third sprint if needed.
 
-    Backlog items: 20, 21, 19, 19
+    Backlog: 20, 21, 19, 19
 
 ### Finished items
  
@@ -37,11 +37,11 @@ Make a projection. You can do this by accumulating how many items you think you 
 
 Say you have those 20 backlog stories and plan to complete them in 4 sprints. You could distribute 5 stories per sprint, so your chart can be configured as:
 
-    Finished items: 5, 10, 15, 20
+    Finished: 5, 5, 5, 5
 
-Now say your team finishes the first sprint on time with 5 stories completed as planned, then on the second sprint something happened and they managed to deliver only 3 stories, so we have `5, 8` (remember, it's cumulative). The third sprint ends with 3 more stories, and finally 2 on the fourth sprint. As a result, we have:
+Now let's imagine your team finishes the first sprint on time with 5 stories completed as planned; then on the second sprint something happened and they managed to deliver only 3 stories; the third sprint ends with 3 more stories; and finally 2 on the fourth sprint. As a result, we have:
    
-    Finished items: 5, 8, 11, 13
+    Finished: 5, 3, 3, 2
 
 As we can see, 7 stories remain unfinished, and more sprints are necessary. The conclusion is that the initial estimation made before the project started was just a wild guess, and it failed.
 
@@ -60,21 +60,12 @@ It's just [linear regression](https://en.wikipedia.org/wiki/Linear_regression) r
 
 ## Trouble shootings
 
-- The input values of **Backlog items** and **Finished items** should be comma-separated. Don't include a comma at the end.
-- The **X scale** should be comma-separated. Don't include a comma at the end.
-- The **Y scale** should be an integer number.
+- The input values of **Backlog**, **Finished**, and **Planned** should be a list of comma-separated integer numbers. Don't include a comma at the end.
+- The **Labels** (X scale) field should be a comma-separated list of labels. Don't include a comma at the end.
+- The **Scale** (Y scale) field should be an integer number.
 - You can save your progress and changes just by bookmarking the page in your browser to generate different versions of it. Once you hit the **Update chart** button, all the chart data is updated on the page link.
 
-## Q&A for developers:
-
-**Q**: "*Dude, your code is the ugliest I've ever seen; why don't you use the latest {put favorite front-end framework here} along with an enterprise database; back-end framework; Kubernetes; and spend 36 months developing this app???!!!*".
- 
-**A**: Didn't you hear the latest trend? Vanilla single-file application is the new hype. Don't miss out!
-Just kidding, always evaluate your project needs! ;)
-
-**Q**: Is this a solid and production-ready application?
-
-**A**: No. I would call this a *draft/prototype/side-project/with-no-aspiration-to-become-the-next-unicorn-startup* that you can just download and try on your own computer.
+## Footnotes
 
 [^1]: **#NoEstimates**. I would like to invite you to watch [this nice presentation on YouTube](https://www.youtube.com/watch?v=QVBlnCTu9Ms) given by *Allen Holub* about software development estimations. I guarantee your time won't be wasted.
 
