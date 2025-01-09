@@ -2,11 +2,9 @@
 
 ## What is this?
 
-Say you have a bunch of tasks on your backlog, and your manager gives you a deadline or asks you to provide an estimation of when you and your team will complete the project.
+Say you have a bunch of tasks in your backlog, and your boss gives you a deadline or asks you to provide an estimation of when you and your team will complete the project.
 
-Easy Estimate — a cliché, yes — is a simple  estimation[^1] tool that helps you discover if what you are trying to accomplish is even possible.
-
-You can use this tool to make projections of anything you classify as a pile of things that need to be done.
+Easy Estimate — a cliché, yes — is a simple  projection[^1] tool that helps you ~estimate~ discover if what you are trying to accomplish is even possible.
 
 ## How to install
 
